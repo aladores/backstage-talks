@@ -2,16 +2,23 @@ import Store from './services/Store.js'
 let currentStore = new Store;
 
 window.addEventListener("DOMContentLoaded", () => {
-    const mainContainer = document.querySelector(".main-container");
-    const bookItems = mainContainer.querySelectorAll(".book-wrapper");
-    const bookItemsReverse = Array.from(bookItems).reverse();
-    const bookLinks = document.querySelectorAll(".issue-list a");
 
-    currentStore.setCounter(bookItems.length);
-    initScroll(mainContainer, bookItemsReverse);
-    initKeyDown(bookItemsReverse);
-    initLinks(bookLinks);
-    setActiveBook();
+    if (window.innerWidth >= 990) {
+        console.log("running desktop script");
+        const mainContainer = document.querySelector(".main-container");
+        const bookItems = mainContainer.querySelectorAll(".book-wrapper");
+        const bookItemsReverse = Array.from(bookItems).reverse();
+        const bookLinks = document.querySelectorAll(".issue-list a");
+
+        currentStore.setCounter(bookItems.length);
+        initScroll(mainContainer, bookItemsReverse);
+        initKeyDown(bookItemsReverse);
+        initLinks(bookLinks);
+        setActiveBook();
+    } else {
+        console.log("running mobile script");
+    }
+
 });
 
 function initScroll(mainContainer, bookItems) {
@@ -67,7 +74,7 @@ function setActiveBook() {
     bookLinks.forEach(function (link) {
         const bookId = link.getAttribute("href").substring(1);
         const currentId = bookId.slice(bookId.length - 1);
-        if (parseInt(currentId) === currentStore.counter) {
+        if (parseInt(currentId) == parseInt(currentStore.counter)) {
             link.classList.add("text-bold");
         }
         else {
@@ -80,7 +87,7 @@ function moveToBook(book) {
     changeColorBackground(currentStore.counter);
     book.scrollIntoView({ behavior: "smooth" });
     setActiveBook();
-    console.log(currentStore.counter);
+    //console.log(currentStore.counter);
 }
 
 function changeColorBackground(id) {
