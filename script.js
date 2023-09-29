@@ -11,6 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
     initScroll(mainContainer, bookItemsReverse);
     initKeyDown(bookItemsReverse);
     initLinks(bookLinks);
+    setActiveBook();
 });
 
 function initScroll(mainContainer, bookItems) {
@@ -47,6 +48,7 @@ function initLinks(bookLinks) {
         });
     });
 }
+
 function initKeyDown(books) {
     window.addEventListener('keydown', function (event) {
         if (event.key == 'ArrowUp' && currentStore.counter < books.length) {
@@ -57,12 +59,27 @@ function initKeyDown(books) {
             currentStore.decrement();
             moveToBook(books[currentStore.counter - 1]);
         }
-
     });
 }
+
+function setActiveBook() {
+    const bookLinks = document.querySelectorAll(".issue-list a");
+    bookLinks.forEach(function (link) {
+        const bookId = link.getAttribute("href").substring(1);
+        const currentId = bookId.slice(bookId.length - 1);
+        if (parseInt(currentId) === currentStore.counter) {
+            link.classList.add("text-bold");
+        }
+        else {
+            link.classList.remove("text-bold");
+        }
+    });
+}
+
 function moveToBook(book) {
     changeColorBackground(currentStore.counter);
     book.scrollIntoView({ behavior: "smooth" });
+    setActiveBook();
     console.log(currentStore.counter);
 }
 
