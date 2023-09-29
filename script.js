@@ -1,122 +1,93 @@
+import Store from './services/Store.js'
+let currentStore = new Store;
+
 window.addEventListener("DOMContentLoaded", () => {
-    moveToDefaultPosition();
-    moveIssue();
-    moveIssueLinks();
+    const mainContainer = document.querySelector(".main-container");
+    const bookItems = mainContainer.querySelectorAll(".book-wrapper");
+    const bookItemsReverse = Array.from(bookItems).reverse();
+    const bookLinks = document.querySelectorAll(".issue-list a");
+
+    currentStore.setCounter(bookItems.length);
+    initScroll(mainContainer, bookItemsReverse);
+    initKeyDown(bookItemsReverse);
+    initLinks(bookLinks);
 });
 
-function moveToDefaultPosition() {
-    window.scrollTo(0, 0);
-}
-// function moveIssue() {
-//     const mainContainer = document.querySelector(".main-container");
-//     const books = document.querySelectorAll(".book-wrapper");
-
-//     let timeoutId;
-//     const updateMiddleElementId = () => {
-//         const viewportHeight = window.innerHeight;
-//         const middleViewportPosition = viewportHeight / 2;
-
-//         let middleElementId = null;
-
-//         books.forEach(book => {
-//             const elementTop = book.getBoundingClientRect().top;
-//             const elementBottom = book.getBoundingClientRect().bottom;
-
-//             if (elementTop < middleViewportPosition && elementBottom > middleViewportPosition) {
-//                 middleElementId = book.id.slice(book.id.length - 1);
-//             }
-//         });
-
-//         if (middleElementId) {
-//             const newHash = `#issue-${middleElementId}`;
-//             if (window.location.hash !== newHash) {
-//                 history.replaceState(null, null, newHash);
-//                 changeColorBackground(middleElementId);
-//             }
-//         }
-//     };
-
-//     // Initial call to set the middle element when the page loads
-//     updateMiddleElementId();
-
-//     // Add a scroll event listener to update the middle element when scrolling
-//     mainContainer.addEventListener("scroll", () => {
-//         clearTimeout(timeoutId); // Clear the previous timer
-//         timeoutId = setTimeout(updateMiddleElementId, 100); // Set a new timer
-//     });
-// }
-
-
-function moveIssue() {
-    const scrollContainer = document.querySelector(".main-container");
-    const scrollItems = document.querySelectorAll(".book-wrapper");
-    const scrollItemsReverse = Array.from(scrollItems).reverse();
-    let currentIndex = scrollItemsReverse.length;
-    console.log(currentIndex);
+function initScroll(mainContainer, bookItems) {
     let isScrolling = false;
-
-    scrollContainer.addEventListener("wheel", function (event) {
-        event.preventDefault(); // Prevent the default scroll behavior
-
+    mainContainer.addEventListener("wheel", function (event) {
+        event.preventDefault();
         if (!isScrolling) {
             isScrolling = true;
-            if (event.deltaY > 0 && currentIndex > 1) {
-                currentIndex--;
-            } else if (event.deltaY < 0 && currentIndex < scrollItemsReverse.length) {
-                currentIndex++;
+            if (event.deltaY > 0 && currentStore.counter > 1) {
+                currentStore.decrement();
+                moveToBook(bookItems[currentStore.counter - 1]);
+            } else if (event.deltaY < 0 && currentStore.counter < bookItems.length) {
+                currentStore.increment();
+                moveToBook(bookItems[currentStore.counter - 1]);
             }
-
-            changeColorBackground(currentIndex);
-            scrollItemsReverse[currentIndex - 1].scrollIntoView({ behavior: "smooth" });
-
             setTimeout(function () {
                 isScrolling = false;
-            }, 300);
+            }, 1200);
         }
     });
 };
-function moveIssueLinks() {
-    const issueLinks = document.querySelectorAll(".issue-list a");
-    // Add click event listeners to each link
-    issueLinks.forEach(function (link) {
-        link.addEventListener("click", function (event) {
-            event.preventDefault(); // Prevent the default link behavior
 
-            const targetId = link.getAttribute("href").substring(1); // Get the target section's ID
-            const targetSection = document.getElementById(targetId); // Get the target section
-            changeColorBackground(targetId);
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: "smooth" }); // Scroll to the target section smoothly
+function initLinks(bookLinks) {
+    bookLinks.forEach(function (link) {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            const bookId = link.getAttribute("href").substring(1);
+            const book = document.getElementById(bookId);
+            const currentId = bookId.slice(bookId.length - 1);
+            if (book) {
+                currentStore.setCounter(currentId);
+                moveToBook(book);
             }
         });
     });
 }
+function initKeyDown(books) {
+    window.addEventListener('keydown', function (event) {
+        if (event.key == 'ArrowUp' && currentStore.counter < books.length) {
+            currentStore.increment();
+            moveToBook(books[currentStore.counter - 1]);
+        }
+        else if (event.key == 'ArrowDown' && currentStore.counter > 1) {
+            currentStore.decrement();
+            moveToBook(books[currentStore.counter - 1]);
+        }
+
+    });
+}
+function moveToBook(book) {
+    changeColorBackground(currentStore.counter);
+    book.scrollIntoView({ behavior: "smooth" });
+    console.log(currentStore.counter);
+}
 
 function changeColorBackground(id) {
     switch (parseInt(id)) {
-
-        case 1:
-            document.body.style.backgroundColor = "#e30512";
-            break;
-        case 2:
-            document.body.style.backgroundColor = "#1d3fbb";
-            break;
-        case 3:
-            document.body.style.backgroundColor = "#ffbe00";
-            break;
-        case 4:
-            document.body.style.backgroundColor = "#ff651a";
-            break;
-        case 5:
-            document.body.style.backgroundColor = "#00c1b5";
+        case 7:
+            document.body.style.backgroundColor = "#FF608C";
             break;
         case 6:
             document.body.style.backgroundColor = "#fff";
             break;
-        case 7:
-            document.body.style.backgroundColor = "#FF608C";
+        case 5:
+            document.body.style.backgroundColor = "#00c1b5";
             break;
-
+        case 4:
+            document.body.style.backgroundColor = "#ff651a";
+            break;
+        case 3:
+            document.body.style.backgroundColor = "#ffbe00";
+            break;
+        case 2:
+            document.body.style.backgroundColor = "#1d3fbb";
+            break;
+        case 1:
+            document.body.style.backgroundColor = "#e30512";
+            break;
     }
 }
-
