@@ -60,14 +60,9 @@ function moveIssue() {
 
         if (!isScrolling) {
             isScrolling = true;
-            if (event.deltaY > 0) {
-                if (currentIndex === 0) {
-                    console.log("here");
-                    return;
-                }
-
+            if (event.deltaY > 0 && currentIndex > 1) {
                 currentIndex--;
-            } else {
+            } else if (event.deltaY < 0 && currentIndex < scrollItemsReverse.length) {
                 currentIndex++;
             }
 
@@ -89,7 +84,6 @@ function moveIssueLinks() {
 
             const targetId = link.getAttribute("href").substring(1); // Get the target section's ID
             const targetSection = document.getElementById(targetId); // Get the target section
-            console.log(targetId);
             changeColorBackground(targetId);
             if (targetSection) {
                 targetSection.scrollIntoView({ behavior: "smooth" }); // Scroll to the target section smoothly
@@ -99,7 +93,6 @@ function moveIssueLinks() {
 }
 
 function changeColorBackground(id) {
-    console.log(id);
     switch (parseInt(id)) {
 
         case 1:
