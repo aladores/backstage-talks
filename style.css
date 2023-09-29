@@ -102,12 +102,9 @@ body {
 }
 
 /* MAIN */
-
 .main-container {
     height: 100%;
     overflow: scroll;
-    scroll-snap-type: y mandatory;
-
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -124,12 +121,10 @@ body {
 }
 
 .book-wrapper {
-    height: 100vh;
-    scroll-snap-align: center;
-
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
 }
 
 .book-container {
