@@ -62,6 +62,11 @@
     font-weight: bold;
 }
 
+.pink-text {
+    color: var(--pink) !important;
+}
+
+/* BODY */
 html,
 body {
     height: 100%;
@@ -69,9 +74,10 @@ body {
 
 body {
     font-family: 'Roboto', sans-serif !important;
+    overflow: hidden;
     background-color: var(--pink);
     transition: all 1s;
-    overflow: hidden;
+
 }
 
 /* HEADER */
@@ -101,6 +107,7 @@ body {
     height: 100%;
     overflow: scroll;
     scroll-snap-type: y mandatory;
+
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -119,10 +126,10 @@ body {
 .book-wrapper {
     height: 100vh;
     scroll-snap-align: center;
+
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .book-container {
@@ -176,7 +183,7 @@ body {
 .footer-left {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     max-width: 300px;
 }
 
