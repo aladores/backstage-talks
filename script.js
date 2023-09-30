@@ -5,19 +5,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const mainContainer = document.querySelector(".main-container");
     const bookItems = mainContainer.querySelectorAll(".book-wrapper");
     const bookLinks = document.querySelectorAll(".issue-list a");
-    // if (window.innerWidth >= 990) {
-    //     //Desktop script
-    //     const bookItemsReverse = Array.from(bookItems).reverse();
-    //     const bookLinks = document.querySelectorAll(".issue-list a");
-
-    //     currentStore.setCounter(bookItems.length);
-    //     initScroll(mainContainer, bookItemsReverse);
-    //     initKeyDown(bookItemsReverse);
-    //     initLinks(bookLinks);
-    //     //Always start at the beginning 
-    //     moveToBook(bookItemsReverse[currentStore.counter - 1]);
-    //     setActiveBook();
-    // } else {
     //Mobile script
     function handleIntersection(entries, observer) {
         entries.forEach(entry => {
@@ -38,6 +25,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
     initScroll(mainContainer, bookItems.length);
+    initKeyDown(mainContainer, bookItems.length);
     initLinks(bookLinks);
     // }
 });
@@ -72,44 +60,30 @@ function initLinks(bookLinks) {
             event.preventDefault();
             const bookId = link.getAttribute("href").substring(1);
             const book = document.getElementById(bookId);
-            const currentId = bookId.slice(bookId.length - 1);
             if (book) {
-                currentStore.setCounter(currentId);
                 moveToBook(book);
             }
         });
     });
 }
 
-function initKeyDown(books) {
+function initKeyDown(mainContainer, maxLength) {
     window.addEventListener('keydown', function (event) {
-        if (event.key == 'ArrowUp' && currentStore.counter < books.length) {
-            currentStore.increment();
-            moveToBook(books[currentStore.counter - 1]);
-        }
-        else if (event.key == 'ArrowDown' && currentStore.counter > 1) {
-            currentStore.decrement();
-            moveToBook(books[currentStore.counter - 1]);
+        const url = window.location.href.split("#");
+        let currentId = (url[1] && url[1].split("-")[1]);
+
+        if (event.key === 'ArrowDown' && parseInt(currentId) > 1) {
+            const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) - 1}`);
+            moveToBook(bookElement);
+        } else if (event.key === 'ArrowUp' && parseInt(currentId) < maxLength) {
+            const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) + 1}`);
+            moveToBook(bookElement);
         }
     });
 }
 
-function setActiveBook() {
-    const bookLinks = document.querySelectorAll(".issue-list a");
-    bookLinks.forEach(function (link) {
-        const bookId = link.getAttribute("href").substring(1);
-        const currentId = bookId.slice(bookId.length - 1);
-        if (parseInt(currentId) == parseInt(currentStore.counter)) {
-            link.classList.add("active");
-        }
-        else {
-            link.classList.remove("active");
-        }
-    });
-}
 
 function moveToBook(book) {
-    //changeBackgroundColor(book.id);
     book.scrollIntoView({ behavior: "smooth" });
     //setActiveBook();
 }
@@ -131,4 +105,18 @@ function changeBackgroundColor(bookId) {
     }
 
     history.pushState(null, null, `#${bookId}`);
+}
+
+function setActiveBook() {
+    const bookLinks = document.querySelectorAll(".issue-list a");
+    bookLinks.forEach(function (link) {
+        const bookId = link.getAttribute("href").substring(1);
+        const currentId = bookId.slice(bookId.length - 1);
+        if (parseInt(currentId) == parseInt(currentStore.counter)) {
+            link.classList.add("active");
+        }
+        else {
+            link.classList.remove("active");
+        }
+    });
 }

@@ -64,6 +64,7 @@ body {
     font-family: 'Roboto', sans-serif !important;
     background-color: var(--pink);
     transition: all 1s;
+
     overflow: hidden;
 }
 
