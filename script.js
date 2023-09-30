@@ -8,8 +8,9 @@ window.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
 
     function toggleView() {
+        snapToClosestBook(mainContainer);
         if (window.innerWidth > 990) {
-            snapToClosestBook(mainContainer);
+
             handleScroll(mainContainer, bookItems.length);
         }
         else {
