@@ -4,60 +4,67 @@ let currentStore = new Store;
 window.addEventListener("DOMContentLoaded", () => {
     const mainContainer = document.querySelector(".main-container");
     const bookItems = mainContainer.querySelectorAll(".book-wrapper");
-    if (window.innerWidth >= 990) {
-        //Desktop script
-        const bookItemsReverse = Array.from(bookItems).reverse();
-        const bookLinks = document.querySelectorAll(".issue-list a");
+    const bookLinks = document.querySelectorAll(".issue-list a");
+    // if (window.innerWidth >= 990) {
+    //     //Desktop script
+    //     const bookItemsReverse = Array.from(bookItems).reverse();
+    //     const bookLinks = document.querySelectorAll(".issue-list a");
 
-        currentStore.setCounter(bookItems.length);
-        initScroll(mainContainer, bookItemsReverse);
-        initKeyDown(bookItemsReverse);
-        initLinks(bookLinks);
-        //Always start at the beginning 
-        moveToBook(bookItemsReverse[currentStore.counter - 1]);
-        setActiveBook();
-    } else {
-        //Mobile script
-        function handleIntersection(entries, observer) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const bookId = entry.target.getAttribute("id");
-                    changeBackgroundColor(bookId);
-                }
-            });
-        }
-        const observer = new IntersectionObserver(handleIntersection, {
-            root: null,
-            rootMargin: "0px",
-            threshold: 0.5,
-        });
-
-        bookItems.forEach(section => {
-            observer.observe(section);
+    //     currentStore.setCounter(bookItems.length);
+    //     initScroll(mainContainer, bookItemsReverse);
+    //     initKeyDown(bookItemsReverse);
+    //     initLinks(bookLinks);
+    //     //Always start at the beginning 
+    //     moveToBook(bookItemsReverse[currentStore.counter - 1]);
+    //     setActiveBook();
+    // } else {
+    //Mobile script
+    function handleIntersection(entries, observer) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bookId = entry.target.getAttribute("id");
+                changeBackgroundColor(bookId);
+            }
         });
     }
+    const observer = new IntersectionObserver(handleIntersection, {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5,
+    });
+
+    bookItems.forEach(section => {
+        observer.observe(section);
+    });
+
+    initScroll(mainContainer, bookItems.length);
+    initLinks(bookLinks);
+    // }
 });
 
-
-function initScroll(mainContainer, bookItems) {
+function initScroll(mainContainer, maxLength) {
     let isScrolling = false;
+
     mainContainer.addEventListener("wheel", function (event) {
         event.preventDefault();
         if (!isScrolling) {
             isScrolling = true;
-            if (event.deltaY > 0 && currentStore.counter > 1) {
-                currentStore.decrement();
-                moveToBook(bookItems[currentStore.counter - 1]);
-            } else if (event.deltaY < 0 && currentStore.counter < bookItems.length) {
-                currentStore.increment();
-                moveToBook(bookItems[currentStore.counter - 1]);
+            const url = window.location.href.split("#");
+            let currentId = (url[1].split("-")[1]);
+            if (event.deltaY > 0 && parseInt(currentId) > 1) {
+                const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) - 1}`);
+                moveToBook(bookElement);
+            } else if (event.deltaY < 0 && parseInt(currentId) < maxLength) {
+                const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) + 1}`);
+                moveToBook(bookElement);
             }
+
             setTimeout(function () {
                 isScrolling = false;
             }, 1200);
         }
     });
-};
+}
 
 function initLinks(bookLinks) {
     bookLinks.forEach(function (link) {
@@ -102,9 +109,9 @@ function setActiveBook() {
 }
 
 function moveToBook(book) {
-    changeBackgroundColor(book.id);
+    //changeBackgroundColor(book.id);
     book.scrollIntoView({ behavior: "smooth" });
-    setActiveBook();
+    //setActiveBook();
 }
 
 function changeBackgroundColor(bookId) {
