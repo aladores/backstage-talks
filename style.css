@@ -6,14 +6,7 @@
     --blue: #1d3fbb;
     --red: #e30512;
     --black: #251d20;
-
     --white: #fff;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
 }
 
 /*TEXT*/
@@ -67,11 +60,6 @@
 }
 
 /* BODY */
-html,
-body {
-    height: 100%;
-}
-
 body {
     font-family: 'Roboto', sans-serif !important;
     background-color: var(--pink);
@@ -111,8 +99,6 @@ body {
     text-decoration: underline;
 }
 
-
-
 /* MAIN */
 .main-container {
     height: 100%;
@@ -145,8 +131,12 @@ body {
     text-align: center;
 }
 
-.book-image {
+.book-image-container {
     max-width: 420px;
+}
+
+.book-image {
+    width: 100%;
 }
 
 .book-info {
@@ -222,6 +212,8 @@ body {
     font-weight: bold;
 }
 
+
+
 @media (max-width: 990px) {
     body {
         overflow: auto;
@@ -229,10 +221,6 @@ body {
 
     .header-wrapper {
         position: absolute;
-    }
-
-    .header-logo {
-        width: 175px;
     }
 
     .header-email {
@@ -243,13 +231,13 @@ body {
         height: auto;
     }
 
-    .book-image {
-        width: 80%;
-        max-width: 420px;
+    .book-container {
+        margin-top: 55px;
     }
 
     .book-info {
-        padding: 1rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
     }
 
     .issue-list {
@@ -278,6 +266,26 @@ body {
 
     .footer-email {
         display: block;
+        padding-bottom: 1rem;
     }
 
+}
+
+@media (max-width:767px) {
+    .header-wrapper {
+        position: absolute;
+    }
+
+    .book-container {
+        margin-top: 0px;
+    }
+
+    .book-image {
+        width: 90%;
+
+    }
+
+    .header-logo {
+        width: 175px;
+    }
 }
