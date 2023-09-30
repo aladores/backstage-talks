@@ -2,11 +2,10 @@ import Store from './services/Store.js'
 let currentStore = new Store;
 
 window.addEventListener("DOMContentLoaded", () => {
-
+    const mainContainer = document.querySelector(".main-container");
+    const bookItems = mainContainer.querySelectorAll(".book-wrapper");
     if (window.innerWidth >= 990) {
-        console.log("running desktop script");
-        const mainContainer = document.querySelector(".main-container");
-        const bookItems = mainContainer.querySelectorAll(".book-wrapper");
+        //Desktop script
         const bookItemsReverse = Array.from(bookItems).reverse();
         const bookLinks = document.querySelectorAll(".issue-list a");
 
@@ -14,12 +13,31 @@ window.addEventListener("DOMContentLoaded", () => {
         initScroll(mainContainer, bookItemsReverse);
         initKeyDown(bookItemsReverse);
         initLinks(bookLinks);
+        //Always start at the beginning 
+        moveToBook(bookItemsReverse[currentStore.counter - 1]);
         setActiveBook();
     } else {
-        console.log("running mobile script");
-    }
+        //Mobile script
+        function handleIntersection(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bookId = entry.target.getAttribute("id");
+                    changeBackgroundColor(bookId);
+                }
+            });
+        }
+        const observer = new IntersectionObserver(handleIntersection, {
+            root: null,
+            rootMargin: "0px",
+            threshold: 0.5,
+        });
 
+        bookItems.forEach(section => {
+            observer.observe(section);
+        });
+    }
 });
+
 
 function initScroll(mainContainer, bookItems) {
     let isScrolling = false;
@@ -75,43 +93,35 @@ function setActiveBook() {
         const bookId = link.getAttribute("href").substring(1);
         const currentId = bookId.slice(bookId.length - 1);
         if (parseInt(currentId) == parseInt(currentStore.counter)) {
-            link.classList.add("text-bold");
+            link.classList.add("active");
         }
         else {
-            link.classList.remove("text-bold");
+            link.classList.remove("active");
         }
     });
 }
 
 function moveToBook(book) {
-    changeColorBackground(currentStore.counter);
+    changeBackgroundColor(book.id);
     book.scrollIntoView({ behavior: "smooth" });
     setActiveBook();
-    //console.log(currentStore.counter);
 }
 
-function changeColorBackground(id) {
-    switch (parseInt(id)) {
-        case 7:
-            document.body.style.backgroundColor = "#FF608C";
-            break;
-        case 6:
-            document.body.style.backgroundColor = "#fff";
-            break;
-        case 5:
-            document.body.style.backgroundColor = "#00c1b5";
-            break;
-        case 4:
-            document.body.style.backgroundColor = "#ff651a";
-            break;
-        case 3:
-            document.body.style.backgroundColor = "#ffbe00";
-            break;
-        case 2:
-            document.body.style.backgroundColor = "#1d3fbb";
-            break;
-        case 1:
-            document.body.style.backgroundColor = "#e30512";
-            break;
+function changeBackgroundColor(bookId) {
+    const bookColors = {
+        "issue-7": "#FF608C",
+        "issue-6": "#fff",
+        "issue-5": "#00c1b5",
+        "issue-4": "#ff651a",
+        "issue-3": "#ffbe00",
+        "issue-2": "#1d3fbb",
+        "issue-1": "#e30512",
+    };
+
+    if (bookColors.hasOwnProperty(bookId)) {
+        const backgroundColor = bookColors[bookId];
+        document.body.style.backgroundColor = backgroundColor;
     }
+
+    history.pushState(null, null, `#${bookId}`);
 }

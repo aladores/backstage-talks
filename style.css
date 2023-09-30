@@ -132,7 +132,7 @@ body {
 }
 
 .book-image {
-    width: 50%;
+    max-width: 420px;
 }
 
 .book-info {
@@ -178,11 +178,15 @@ body {
     max-width: 300px;
 }
 
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 .footer-email {
     display: none;
 }
-
-.footer-right {}
 
 .issue-list {
     display: flex;
@@ -193,6 +197,11 @@ body {
 
 .issue-list a {
     text-decoration: none;
+}
+
+.active {
+    font-weight: bold;
+    text-decoration: underline !important;
 }
 
 @media (max-width: 990px) {
@@ -218,6 +227,7 @@ body {
 
     .book-image {
         width: 80%;
+        max-width: 420px;
     }
 
     .book-info {
