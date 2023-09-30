@@ -1,19 +1,33 @@
-import Store from './services/Store.js'
-let currentStore = new Store;
-
+let wheelEventHandler;
 window.addEventListener("DOMContentLoaded", () => {
     const mainContainer = document.querySelector(".main-container");
     const bookItems = mainContainer.querySelectorAll(".book-wrapper");
     const bookLinks = document.querySelectorAll(".issue-list a");
-    //Mobile script
+
+    //Always start at the beginning of the page
+    window.scrollTo(0, 0);
+
+    function toggleView() {
+        if (window.innerWidth > 990) {
+            snapToClosestBook(mainContainer);
+            handleScroll(mainContainer, bookItems.length);
+        }
+        else {
+            //If mobile view disable the scroll hi jacking
+            window.removeEventListener("wheel", wheelEventHandler);
+        }
+    }
+
     function handleIntersection(entries, observer) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const bookId = entry.target.getAttribute("id");
+                updateActiveId(bookId, bookLinks);
                 changeBackgroundColor(bookId);
             }
         });
     }
+
     const observer = new IntersectionObserver(handleIntersection, {
         root: null,
         rootMargin: "0px",
@@ -24,17 +38,18 @@ window.addEventListener("DOMContentLoaded", () => {
         observer.observe(section);
     });
 
-    initScroll(mainContainer, bookItems.length);
-    initKeyDown(mainContainer, bookItems.length);
-    initLinks(bookLinks);
-    // }
+    handleKeydown(mainContainer, bookItems.length);
+    handleLinkClick(bookLinks);
+    toggleView();
+    window.addEventListener("resize", () => {
+        toggleView();
+    });
 });
 
-function initScroll(mainContainer, maxLength) {
+function handleScroll(mainContainer, maxLength) {
     let isScrolling = false;
 
-    mainContainer.addEventListener("wheel", function (event) {
-        event.preventDefault();
+    wheelEventHandler = function (event) {
         if (!isScrolling) {
             isScrolling = true;
             const url = window.location.href.split("#");
@@ -51,10 +66,11 @@ function initScroll(mainContainer, maxLength) {
                 isScrolling = false;
             }, 1200);
         }
-    });
+    };
+    window.addEventListener("wheel", wheelEventHandler);
 }
 
-function initLinks(bookLinks) {
+function handleLinkClick(bookLinks) {
     bookLinks.forEach(function (link) {
         link.addEventListener("click", function (event) {
             event.preventDefault();
@@ -67,7 +83,7 @@ function initLinks(bookLinks) {
     });
 }
 
-function initKeyDown(mainContainer, maxLength) {
+function handleKeydown(mainContainer, maxLength) {
     window.addEventListener('keydown', function (event) {
         const url = window.location.href.split("#");
         let currentId = (url[1] && url[1].split("-")[1]);
@@ -82,12 +98,33 @@ function initKeyDown(mainContainer, maxLength) {
     });
 }
 
+function snapToClosestBook(mainContainer) {
+    const url = window.location.href.split("#");
+    let currentId = (url[1].split("-")[1]);
+    const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
+    moveToBook(bookElement);
+}
 
 function moveToBook(book) {
     book.scrollIntoView({ behavior: "smooth" });
-    //setActiveBook();
 }
 
+function updateActiveId(bookId, bookLinks) {
+    //Update url
+    history.pushState(null, null, `#${bookId}`);
+
+    //Update active links
+    bookLinks.forEach(function (link) {
+        const bookLinkId = link.getAttribute("href").substring(1);
+        if (bookLinkId === bookId) {
+            link.classList.add("text-bold");
+        }
+        else {
+            link.classList.remove("text-bold");
+        }
+    });
+
+}
 function changeBackgroundColor(bookId) {
     const bookColors = {
         "issue-7": "#FF608C",
@@ -103,20 +140,4 @@ function changeBackgroundColor(bookId) {
         const backgroundColor = bookColors[bookId];
         document.body.style.backgroundColor = backgroundColor;
     }
-
-    history.pushState(null, null, `#${bookId}`);
-}
-
-function setActiveBook() {
-    const bookLinks = document.querySelectorAll(".issue-list a");
-    bookLinks.forEach(function (link) {
-        const bookId = link.getAttribute("href").substring(1);
-        const currentId = bookId.slice(bookId.length - 1);
-        if (parseInt(currentId) == parseInt(currentStore.counter)) {
-            link.classList.add("active");
-        }
-        else {
-            link.classList.remove("active");
-        }
-    });
 }
