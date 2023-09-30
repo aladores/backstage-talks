@@ -64,7 +64,6 @@ body {
     font-family: 'Roboto', sans-serif !important;
     background-color: var(--pink);
     transition: all 1s;
-
     overflow: hidden;
 }
 
@@ -130,6 +129,11 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    z-index: 99;
+}
+
+.book-info a:hover {
+    text-decoration: underline;
 }
 
 .book-image-container {

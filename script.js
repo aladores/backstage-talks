@@ -10,12 +10,16 @@ window.addEventListener("DOMContentLoaded", () => {
     function toggleView() {
         snapToClosestBook(mainContainer, bookItems.length);
         if (window.innerWidth > 990) {
-
             handleScroll(mainContainer, bookItems.length);
         }
         else {
             //If mobile view disable the scroll hi jacking
             window.removeEventListener("wheel", wheelEventHandler);
+        }
+    }
+    function addWheelEventListener() {
+        if (window.innerWidth > 990) {
+            window.addEventListener("wheel", wheelEventHandler);
         }
     }
 
@@ -44,6 +48,7 @@ window.addEventListener("DOMContentLoaded", () => {
     toggleView();
     window.addEventListener("resize", () => {
         toggleView();
+        addWheelEventListener();
     });
 });
 
