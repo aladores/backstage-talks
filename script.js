@@ -101,7 +101,6 @@ function handleKeydown(mainContainer, maxLength) {
 
 function snapToClosestBook(mainContainer, maxLength) {
     const url = window.location.href.split("#");
-    console.log(maxLength);
     let currentId = (url[1]?.split("-")[1]) ?? maxLength;
     const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
     moveToBook(bookElement);
