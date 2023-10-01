@@ -136,12 +136,11 @@ body {
     text-decoration: underline;
 }
 
-.book-image-container {
-    max-width: 420px;
-}
 
 .book-image {
     width: 100%;
+    max-width: 420px;
+    height: auto;
 }
 
 .book-info {
