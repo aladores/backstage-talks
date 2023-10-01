@@ -14,12 +14,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         else {
             //If mobile view disable the scroll hi jacking
-            window.removeEventListener("wheel", wheelEventHandler);
-        }
-    }
-    function addWheelEventListener() {
-        if (window.innerWidth > 990) {
-            window.addEventListener("wheel", wheelEventHandler);
+            removeWheelEventListener();
         }
     }
 
@@ -48,32 +43,41 @@ window.addEventListener("DOMContentLoaded", () => {
     toggleView();
     window.addEventListener("resize", () => {
         toggleView();
-        addWheelEventListener();
+
     });
 });
 
 function handleScroll(mainContainer, maxLength) {
-    let isScrolling = false;
+    if (!wheelEventHandler) {
+        let isScrolling = false;
+        wheelEventHandler = function (event) {
+            if (!isScrolling) {
+                isScrolling = true;
+                const url = window.location.href.split("#");
+                let currentId = (url[1].split("-")[1]);
+                if (event.deltaY > 0 && parseInt(currentId) > 1) {
+                    const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) - 1}`);
+                    moveToBook(bookElement);
+                } else if (event.deltaY < 0 && parseInt(currentId) < maxLength) {
+                    const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) + 1}`);
+                    moveToBook(bookElement);
+                }
 
-    wheelEventHandler = function (event) {
-        if (!isScrolling) {
-            isScrolling = true;
-            const url = window.location.href.split("#");
-            let currentId = (url[1].split("-")[1]);
-            if (event.deltaY > 0 && parseInt(currentId) > 1) {
-                const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) - 1}`);
-                moveToBook(bookElement);
-            } else if (event.deltaY < 0 && parseInt(currentId) < maxLength) {
-                const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId) + 1}`);
-                moveToBook(bookElement);
+                setTimeout(function () {
+                    isScrolling = false;
+                }, 1200);
             }
 
-            setTimeout(function () {
-                isScrolling = false;
-            }, 1200);
-        }
-    };
-    window.addEventListener("wheel", wheelEventHandler);
+        };
+        window.addEventListener("wheel", wheelEventHandler);
+    }
+}
+
+function removeWheelEventListener() {
+    if (wheelEventHandler) {
+        window.removeEventListener("wheel", wheelEventHandler);
+        wheelEventHandler = null;
+    }
 }
 
 function handleLinkClick(bookLinks) {

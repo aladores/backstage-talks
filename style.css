@@ -59,6 +59,10 @@
     color: var(--pink) !important;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* BODY */
 body {
     font-family: 'Roboto', sans-serif !important;
