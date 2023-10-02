@@ -15,8 +15,8 @@ Using a framework/library could have been useful in some cases. For example:
 However, the website is simple since its primarily a single page and does not seem to get updated very often. Only minimal changes to the source code are needed if a new magazine issue is added or if the stock status changes.
 
 ## How it works 
-- Each issue section occupies the full height of the current viewport and has a unique ID.
-- The Intersection Observer Web API is used to determine which section is currently visible, specifically when 50 percent or more is visibile in the viewport.
+- For each magazine issue a section is hardcoded a unique ID in the HTML. With CSS, each section takes up the full height of the viewport. 
+- In JavaScript, the Intersection Observer Web API is used to determine which section is currently visible, specifically when 50 percent or more is visibile in the viewport.
 - When a new section becomes visible, these actions occur: 
   - The URL's status is updated with section ID.
   - The status of the current issue in the navigation list is changed to active.
