@@ -136,7 +136,10 @@ function moveBackToBook(book) {
     const offsetTop = book.offsetTop - scrollOffset;
 
     console.log(book);
-    book.scrollTo({});
+    book.scrollTo({
+        top: scrollOffset,
+        behavior: "smooth",
+    });
 }
 
 function updateActiveId(bookId, bookLinks) {
