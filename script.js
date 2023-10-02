@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", () => {
     window.scrollTo(0, 0);
 
     function toggleView() {
-        snapToClosestBook(mainContainer, bookItems.length);
+        snapToBook(mainContainer, bookItems.length);
         if (window.innerWidth > 990) {
             handleScroll(mainContainer, bookItems.length);
         }
@@ -40,6 +40,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     handleKeydown(mainContainer, bookItems.length);
     handleLinkClick(bookLinks);
+
     toggleView();
     window.addEventListener("resize", () => {
         toggleView();
@@ -108,7 +109,7 @@ function handleKeydown(mainContainer, maxLength) {
     });
 }
 
-function snapToClosestBook(mainContainer, maxLength) {
+function snapToBook(mainContainer, maxLength) {
     const url = window.location.href.split("#");
     let currentId = (url[1]?.split("-")[1]) ?? maxLength;
     const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
