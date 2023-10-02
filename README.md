@@ -35,3 +35,6 @@ However, the website is simple since its primarily a single page and does not se
 - Mobile view if the viewport width is under or equal to 990px.
 - In the mobile view. The scroll hijacking is removed and scrolling returns to default. The navigations links are hidden but no changes to the Intersection Observer is made.
 - Both views support navigation directly from the url. For example. If the user enters a url "...backstage-talks/#issue-4". The page will automatically scroll to that issue.
+
+## Issues
+- **Scrolling**: My scroll hijacking implementation has issues with 'macOS Inertia Scrolling' (enabled by default), where the trackpad continues to register input even after the force has been applied. To mitigate this issue, I added a 1200ms delay after any scroll action is received, leading to a less responsive result.
