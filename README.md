@@ -38,3 +38,4 @@ However, the website is simple since its primarily a single page and does not se
 
 ## Issues
 - **Scrolling**: My scroll hijacking implementation has issues with 'macOS Inertia Scrolling' (enabled by default), where the trackpad continues to register input even after the force has been applied. To mitigate this issue, I added a 1200ms delay after any scroll action is received, leading to a less responsive result.
+- **Back Event**: Back browser event does not work as expected. The viewport does not scroll to the top of the previous book issue. 
