@@ -124,7 +124,6 @@ function snapBackToClosestBook(mainContainer, maxLength) {
     const url = window.location.href.split("#");
     let currentId = (url[1]?.split("-")[1]) ?? maxLength;
     const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
-    console.log("Moving back to book: ", currentId);
     moveBackToBook(bookElement);
 }
 
@@ -133,7 +132,8 @@ function moveToBook(book) {
 }
 function moveBackToBook(book) {
     console.log("Here");
-    book.scrollTop({
+    book.scrollTo({
+        top: 100,
         behavior: "smooth",
     });
 }
