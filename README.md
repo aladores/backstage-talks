@@ -1,9 +1,12 @@
+![Frontend Practice and BackStage Talks Logo](https://github.com/aladores/backstage-talks/blob/main/readme_assets/readme_banner.png)
 # Backstage Talks - Frontend Pratice 
-Live: [aladores.github.io/backstage-talks/](aladores.github.io/backstage-talks/)
+Live Demo: [Link](https://aladores.github.io/backstage-talks/)
 
-This website is a practice project from [FrontendPractice.com](https://www.frontendpractice.com/projects/backstage-talks)
+Challenge from: [FrontendPractice.com](https://www.frontendpractice.com/projects/backstage-talks)
 
-It is a recreation of the [Backstage Talks Magazine website](https://backstagetalks.com/) 
+Live Original Site: [BackstageTalks.com](https://backstagetalks.com/) 
+
+![Demo Gif](https://github.com/aladores/backstage-talks/blob/main/readme_assets/demo-gif.gif)
 
 ## Built With
 This website was built with just regular HTML, CSS, and JavaScript. 
