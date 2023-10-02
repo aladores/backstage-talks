@@ -134,9 +134,8 @@ function moveToBook(book) {
 function moveBackToBook(book) {
 
     console.log("Here");
-    book.scrollTo({
-        top: 100,
-        behavior: "smooth",
+    book.scrollIntoView({
+        behavior: 'smooth'
     });
 }
 
