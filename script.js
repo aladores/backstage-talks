@@ -7,11 +7,6 @@ window.addEventListener("DOMContentLoaded", () => {
     //Always start at the beginning of the page
     window.scrollTo(0, 0);
 
-    window.addEventListener("popstate", () => {
-        console.log("back");
-        snapToClosestBook(mainContainer, bookItems.length);
-    });
-
     function toggleView() {
         snapToClosestBook(mainContainer, bookItems.length);
         if (window.innerWidth > 990) {
