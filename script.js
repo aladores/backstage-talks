@@ -117,11 +117,20 @@ function snapToClosestBook(mainContainer, maxLength) {
     const url = window.location.href.split("#");
     let currentId = (url[1]?.split("-")[1]) ?? maxLength;
     const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
-    moveToBook(bookElement);
+    moveBackToBook(bookElement);
 }
 
 function moveToBook(book) {
     book.scrollIntoView({ behavior: "smooth" });
+}
+function moveBackToBook(book) {
+    const scrollOffset = Math.floor((window.innerHeight - book.clientHeight) / 2);
+    const offsetTop = book.offsetTop - scrollOffset;
+
+    window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth",
+    });
 }
 
 function updateActiveId(bookId, bookLinks) {
