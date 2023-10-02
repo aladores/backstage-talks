@@ -7,7 +7,8 @@ window.addEventListener("DOMContentLoaded", () => {
     //Always start at the beginning of the page
     window.scrollTo(0, 0);
 
-    window.addEventListener("popstate", () => {
+    window.addEventListener("popstate", (event) => {
+        event.preventDefault();
         console.log("back");
         snapBackToClosestBook(mainContainer, bookItems.length);
     });
@@ -131,6 +132,7 @@ function moveToBook(book) {
     book.scrollIntoView({ behavior: "smooth" });
 }
 function moveBackToBook(book) {
+
     console.log("Here");
     book.scrollTo({
         top: 100,
