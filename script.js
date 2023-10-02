@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("popstate", () => {
         console.log("back");
-        snapToClosestBook(mainContainer, bookItems.length);
+        snapBackToClosestBook(mainContainer, bookItems.length);
     });
 
     function toggleView() {
@@ -117,6 +117,14 @@ function snapToClosestBook(mainContainer, maxLength) {
     const url = window.location.href.split("#");
     let currentId = (url[1]?.split("-")[1]) ?? maxLength;
     const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
+    moveToBook(bookElement);
+}
+
+function snapBackToClosestBook(mainContainer, maxLength) {
+    const url = window.location.href.split("#");
+    let currentId = (url[1]?.split("-")[1]) ?? maxLength;
+    const bookElement = mainContainer.querySelector(`#issue-${parseInt(currentId)}`);
+    console.log("Moving back to book: ", currentId);
     moveBackToBook(bookElement);
 }
 
@@ -127,6 +135,7 @@ function moveBackToBook(book) {
     const scrollOffset = Math.floor((window.innerHeight - book.clientHeight) / 2);
     const offsetTop = book.offsetTop - scrollOffset;
 
+    console.log(offsetTop);
     window.scrollTo({
         top: offsetTop,
         behavior: "smooth",
