@@ -132,12 +132,8 @@ function moveToBook(book) {
     book.scrollIntoView({ behavior: "smooth" });
 }
 function moveBackToBook(book) {
-    const scrollOffset = Math.floor((window.innerHeight - book.clientHeight) / 2);
-    const offsetTop = book.offsetTop - scrollOffset;
-
-    console.log(book);
-    book.scrollTo({
-        top: scrollOffset,
+    console.log("Here");
+    book.scrollTop({
         behavior: "smooth",
     });
 }
