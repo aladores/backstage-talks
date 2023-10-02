@@ -1,6 +1,5 @@
 ![Frontend Practice and BackStage Talks Logo](https://github.com/aladores/backstage-talks/blob/main/readme_assets/readme_banner.png)
-
-# **Backstage Talks - Frontend Practice**
+# **Frontend Practice - Backstage Talks**
 **Live Demo:** [Link](https://aladores.github.io/backstage-talks/)
 
 **Challenge from:** [FrontendPractice.com](https://www.frontendpractice.com/projects/backstage-talks)
@@ -17,6 +16,8 @@ Using a framework/library could have been useful in some cases. For example:
 - Or dynamic conditional rendering to show if a book is in stock.
 
 However, the website is simple since its primarily a single page and does not seem to get updated very often. Only minimal changes to the source code are needed if a new magazine issue is added or if the stock status changes.
+
+**Size difference:** Each magazine Issue image was converted from png to webp format. This significantly results in a lower file size of **529KB** transferred compared to the original **2.7 MB**.
 
 ## **How it works**
 <details>
@@ -121,6 +122,8 @@ function handleScroll(mainContainer, maxLength) {
 </details>
 <details>
 <summary> <h3>Mobile View</h3> </summary>
+  
+![Demo Gif](https://github.com/aladores/backstage-talks/blob/main/readme_assets/mobile-gif.gif)
 
 Mobile view if the viewport width is under or equal to **990px**.
 - In the mobile view. The **scroll hijacking** is removed and scrolling returns to default. The navigations links are hidden but no changes to the **Intersection Observer** is made.
